@@ -19,6 +19,7 @@ services:
       - PASEO_HOSTNAMES=true
       - PASEO_CORS_ORIGINS=http://localhost:6768
       - T3CODE_BASE_URL=http://localhost:3773
+      - XAI_API_KEY=${XAI_API_KEY:-}
     volumes:
       - ${DATA:-./data}/devbox/home:/home/dev
       - ${HOST_HOME:-${HOME}}/.ssh:/home/dev/.ssh:ro

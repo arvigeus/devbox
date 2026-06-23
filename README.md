@@ -10,6 +10,7 @@ The image includes:
 - [OpenAI Codex CLI](https://github.com/openai/codex) (`codex`) — OpenAI's AI coding agent
 - [Mistral Vibe](https://docs.mistral.ai/vibe/code/cli/install-setup) (`vibe`) — Mistral's AI coding agent
 - [OpenCode](https://opencode.ai) — SST's terminal AI coding assistant
+- [Grok CLI](https://www.npmjs.com/package/@xai-official/grok) (`grok`) — xAI Grok coding agent used by T3 Code
 - [GitHub Copilot CLI](https://github.com/github/copilot-cli) (`copilot`) — GitHub's AI coding agent
 - [Fresh](https://github.com/fresh2dev/fresh) (`fresh`) — terminal editor used by T3 Code environments
 - [Pi](https://pi.dev) (`pi`) — multi-provider AI coding agent
@@ -43,7 +44,7 @@ just build                  # build the image with the released @getpaseo/cli pa
 just dev                    # build the same image and start compose
 just pair                   # show local Paseo and T3 Code pairing links after just dev
 just stop                   # stop the dev container without removing volumes
-just publish <version>      # build the same image and push it to Docker Hub; omit <version> to only push latest
+just publish                # prompt for a version, then push that tag and latest to Docker Hub
 just clean                  # stop compose and remove the local dev image; keeps ./data
 ```
 
@@ -54,11 +55,12 @@ Authenticate each tool once — credentials persist in the `/home/dev` mount:
 ```bash
 docker exec -it devbox claude auth login          # Claude subscription (Pro/Max/Team)
 docker exec -it devbox codex login --device-auth  # ChatGPT subscription
-docker exec -it devbox opencode auth              # OpenCode account
+docker exec -it devbox opencode auth login        # OpenCode account
 docker exec -it devbox gh auth login              # GitHub — enables PR creation, branch push, merge
 docker exec -it devbox glab auth login            # GitLab — enables MR creation, branch push, merge
 docker exec -it devbox az login --use-device-code # Azure — enables Azure resource management
 docker exec -it devbox copilot login              # GitHub Copilot subscription (or auto-uses gh credentials)
+docker exec -it devbox grok login --device-auth   # Grok account, or set XAI_API_KEY for API-key auth
 docker exec -it devbox pi                         # Pi: type /login and select a provider
 docker exec -it devbox vibe --setup               # Mistral Vibe: configure an API key or account access
 ```
@@ -105,6 +107,7 @@ The `/home/dev` mount stores all CLI credentials. Logins survive container resta
 Each auth command either prints a URL to open in your local browser or a device code to enter on the provider's website. The OAuth callback does not need to reach the container — only the code or token is pasted back into the terminal.
 
 If `OPENROUTER_API_KEY` is set in the container environment, startup configures supported agents with that key automatically.
+For Grok, set `XAI_API_KEY` for API-key auth or run `grok login --device-auth` once to cache credentials.
 
 To sign out: `claude auth logout`, `codex logout`, `gh auth logout`, etc.
 
@@ -214,6 +217,7 @@ AUTO_UPDATE=false docker compose restart dev
 | `PASEO_HOSTNAMES`          | `true`         | Hostname allowlist for DNS-rebinding protection              |
 | `PASEO_PASSWORD`           |                | Pre-set daemon password (hashed at startup)                  |
 | `OPENROUTER_API_KEY`       |                | Optional OpenRouter API key for supported tools              |
+| `XAI_API_KEY`              |                | Optional xAI API key for T3 Code's Grok provider             |
 | `T3CODE_BASE_DIR`          | `/home/dev/.local/share/t3code` | T3 Code state directory used by `t3code-pair` |
 | `T3CODE_BASE_URL`          |                | Public T3 Code URL used by `t3code-pair`; set by compose |
 | `OPENCODE_SERVER_USERNAME` |                | Username for OpenCode's web UI                               |

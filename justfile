@@ -132,17 +132,37 @@ login:
 
 	"${DOCKER}" login docker.io -u arvigeus
 
-publish image_version="": login
+publish: login
 	#!/usr/bin/env bash
 	set -euo pipefail
 
 	DOCKER="${DOCKER:-docker}"
-	IMAGE_VERSION="{{image_version}}"
 	IMAGE="{{image}}"
+	NAMESPACE="${IMAGE%%/*}"
+	REPOSITORY="${IMAGE#*/}"
+
+	latest_version="$(
+	  curl -fsSL "https://hub.docker.com/v2/repositories/${NAMESPACE}/${REPOSITORY}/tags?page_size=100&ordering=last_updated" \
+	    | python3 -c 'import json,sys; data=json.load(sys.stdin); print(next((tag.get("name","") for tag in data.get("results",[]) if tag.get("name") and tag.get("name")!="latest"), ""))'
+	)" || latest_version=""
+
+	if [ -n "${latest_version}" ]; then
+	  echo "Latest Docker Hub version: ${latest_version}"
+	else
+	  echo "Latest Docker Hub version: unknown"
+	fi
+
+	read -r -p "New version to publish: " IMAGE_VERSION
+	if [ -z "${IMAGE_VERSION}" ]; then
+	  echo "Version is required." >&2
+	  exit 1
+	fi
+	if [ "${IMAGE_VERSION}" = "latest" ]; then
+	  echo "Use a version tag, not 'latest'." >&2
+	  exit 1
+	fi
 
 	just build "${IMAGE_VERSION}"
 
-	if [ -n "${IMAGE_VERSION}" ]; then
-	  "${DOCKER}" push "${IMAGE}:${IMAGE_VERSION}"
-	fi
+	"${DOCKER}" push "${IMAGE}:${IMAGE_VERSION}"
 	"${DOCKER}" push "${IMAGE}:latest"

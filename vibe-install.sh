@@ -21,7 +21,9 @@ have paseo || npm_packages+=("@getpaseo/cli")
 have claude || npm_packages+=("@anthropic-ai/claude-code")
 have codex || npm_packages+=("@openai/codex")
 have copilot || npm_packages+=("@github/copilot")
+have grok || npm_packages+=("@xai-official/grok")
 have pi || npm_packages+=("@earendil-works/pi-coding-agent")
+have pi-mcp-adapter || npm_packages+=("pi-mcp-adapter")
 have serve || npm_packages+=("serve")
 if [ "${#npm_packages[@]}" -gt 0 ]; then
     npm install -g "${npm_packages[@]}"
