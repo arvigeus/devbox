@@ -1,0 +1,28 @@
+services:
+  dev:
+    build:
+      context: .
+    image: devbox
+    container_name: devbox
+    hostname: dev
+    user: "${PUID:-1000}:${PGID:-1000}"
+    stdin_open: true
+    tty: true
+    ports:
+      - "3773:3773"
+      - "4096:4096"
+      - "5173:5173"
+      - "6767:6767"
+      - "6768:6768"
+    environment:
+      - AUTO_UPDATE=true
+      - PASEO_HOSTNAMES=true
+      - PASEO_CORS_ORIGINS=http://localhost:6768
+      - T3CODE_BASE_URL=http://localhost:3773
+    volumes:
+      - ${DATA:-./data}/devbox/home:/home/dev
+      - ${HOST_HOME:-${HOME}}/.ssh:/home/dev/.ssh:ro
+      - ${HOST_HOME:-${HOME}}/.gnupg:/home/dev/.gnupg
+      - ${HOST_WORKSPACE:-./data/workspace}:/workspace
+    working_dir: /workspace
+    restart: unless-stopped
