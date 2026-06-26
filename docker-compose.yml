@@ -16,6 +16,7 @@ services:
       - "6768:6768"
     environment:
       - AUTO_UPDATE=true
+      - DEVBOX_AI_TOOLS=${DEVBOX_AI_TOOLS:-all}
       - PASEO_HOSTNAMES=true
       - PASEO_CORS_ORIGINS=http://localhost:6768
       - T3CODE_BASE_URL=http://localhost:3773

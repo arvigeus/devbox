@@ -3,19 +3,28 @@ set -euo pipefail
 
 echo "[update] $(date '+%Y-%m-%d %H:%M:%S')"
 
+have() {
+    command -v "$1" >/dev/null 2>&1
+}
+
 run() {
-    command -v "$1" >/dev/null 2>&1 || return 0
     "$@" 2>/dev/null || true
 }
 
-run mise self-update --yes
+have mise && run mise self-update --yes
 
-run npm update -g
+have npm && {
+    run npm update -g
+    run npm cache clean --force
+}
 
-run copilot update
+have copilot && run copilot update
 
-run opencode upgrade
+have opencode && run opencode upgrade
 
-run uv tool upgrade mistral-vibe
+have uv && {
+    run uv tool upgrade --all
+    run uv cache prune
+}
 
 echo "[update] done."

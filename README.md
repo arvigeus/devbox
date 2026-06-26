@@ -25,6 +25,8 @@ All tools are installed under `/home/dev` (user-local). Projects live at `/works
 
 The same `/usr/local/bin/vibe-install` script runs during container startup. This preserves credentials in the `/home/dev` mount while still letting newly added tools appear in existing deployments.
 
+Set `DEVBOX_AI_TOOLS` to choose which optional AI CLIs are installed at runtime. The default is `all`; use a comma- or space-separated list such as `claude,codex,opencode`, or `none` to skip all optional AI CLIs. On startup, disabled tools are removed from the persistent `/home/dev` mount so the update job only sees the selected set.
+
 The web app is built from the matching Paseo release source during the image build.
 T3 Code is built from upstream source during the image build and stores its runtime state under `/home/dev/.local/share/t3code`.
 
@@ -214,6 +216,7 @@ AUTO_UPDATE=false docker compose restart dev
 | Variable                   | Default        | Purpose                                                      |
 | -------------------------- | -------------- | ------------------------------------------------------------ |
 | `AUTO_UPDATE`              | `true`         | Run update pass every 24 h                                   |
+| `DEVBOX_AI_TOOLS`          | `all`          | Optional AI CLIs to keep installed: `claude`, `codex`, `copilot`, `grok`, `opencode`, `pi`, `vibe`; comma- or space-separated |
 | `PASEO_HOSTNAMES`          | `true`         | Hostname allowlist for DNS-rebinding protection              |
 | `PASEO_PASSWORD`           |                | Pre-set daemon password (hashed at startup)                  |
 | `OPENROUTER_API_KEY`       |                | Optional OpenRouter API key for supported tools              |
