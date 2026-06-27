@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.7
 
-ARG PASEO_VERSION=v0.1.98
+ARG PASEO_VERSION=v0.1.101
 ARG T3CODE_VERSION=v0.0.27
 
 FROM node:24-trixie AS paseo-web-build

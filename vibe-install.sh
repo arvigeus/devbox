@@ -44,6 +44,18 @@ reconcile_paseo() {
     have paseo || npm install -g "@getpaseo/cli"
 }
 
+reconcile_opencode() {
+    # if enabled opencode; then
+        have opencode || curl -fsSL https://opencode.ai/install | bash
+    # elif have opencode; then
+    #     rm -f \
+    #         "$HOME/.opencode/bin/opencode" \
+    #         "$HOME/.local/bin/opencode"
+
+    #     rmdir "$HOME/.opencode/bin" "$HOME/.opencode" 2>/dev/null || true
+    # fi
+}
+
 reconcile_serve() {
     have serve || npm install -g serve
 }
@@ -90,18 +102,6 @@ reconcile_pi() {
     fi
 }
 
-reconcile_opencode() {
-    if enabled opencode; then
-        have opencode || curl -fsSL https://opencode.ai/install | bash
-    elif have opencode; then
-        rm -f \
-            "$HOME/.opencode/bin/opencode" \
-            "$HOME/.local/bin/opencode"
-
-        rmdir "$HOME/.opencode/bin" "$HOME/.opencode" 2>/dev/null || true
-    fi
-}
-
 reconcile_vibe() {
     if enabled vibe; then
         { have vibe && have vibe-acp; } || curl -LsSf https://mistral.ai/vibe/install.sh | bash
@@ -118,6 +118,7 @@ main() {
     ensure_node
 
     reconcile_paseo
+    reconcile_opencode
     reconcile_serve
 
     reconcile_claude
@@ -125,7 +126,6 @@ main() {
     reconcile_copilot
     reconcile_grok
     reconcile_pi
-    reconcile_opencode
     reconcile_vibe
 }
 

@@ -213,18 +213,18 @@ AUTO_UPDATE=false docker compose restart dev
 
 ## Runtime Environment
 
-| Variable                   | Default        | Purpose                                                      |
-| -------------------------- | -------------- | ------------------------------------------------------------ |
-| `AUTO_UPDATE`              | `true`         | Run update pass every 24 h                                   |
-| `DEVBOX_AI_TOOLS`          | `all`          | Optional AI CLIs to keep installed: `claude`, `codex`, `copilot`, `grok`, `opencode`, `pi`, `vibe`; comma- or space-separated |
-| `PASEO_HOSTNAMES`          | `true`         | Hostname allowlist for DNS-rebinding protection              |
-| `PASEO_PASSWORD`           |                | Pre-set daemon password (hashed at startup)                  |
-| `OPENROUTER_API_KEY`       |                | Optional OpenRouter API key for supported tools              |
-| `XAI_API_KEY`              |                | Optional xAI API key for T3 Code's Grok provider             |
-| `T3CODE_BASE_DIR`          | `/home/dev/.local/share/t3code` | T3 Code state directory used by `t3code-pair` |
-| `T3CODE_BASE_URL`          |                | Public T3 Code URL used by `t3code-pair`; set by compose |
-| `OPENCODE_SERVER_USERNAME` |                | Username for OpenCode's web UI                               |
-| `OPENCODE_SERVER_PASSWORD` |                | Enable and password-protect OpenCode's web UI on port `4096` |
+| Variable                   | Default                         | Purpose                                                                                                           |
+| -------------------------- | ------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `AUTO_UPDATE`              | `true`                          | Run update pass every 24 h                                                                                        |
+| `DEVBOX_AI_TOOLS`          | `all`                           | Optional AI CLIs to keep installed: `claude`, `codex`, `copilot`, `grok`, `pi`, `vibe`; comma- or space-separated |
+| `PASEO_HOSTNAMES`          | `true`                          | Hostname allowlist for DNS-rebinding protection                                                                   |
+| `PASEO_PASSWORD`           |                                 | Pre-set daemon password (hashed at startup)                                                                       |
+| `OPENROUTER_API_KEY`       |                                 | Optional OpenRouter API key for supported tools                                                                   |
+| `XAI_API_KEY`              |                                 | Optional xAI API key for T3 Code's Grok provider                                                                  |
+| `T3CODE_BASE_DIR`          | `/home/dev/.local/share/t3code` | T3 Code state directory used by `t3code-pair`                                                                     |
+| `T3CODE_BASE_URL`          |                                 | Public T3 Code URL used by `t3code-pair`; set by compose                                                          |
+| `OPENCODE_SERVER_USERNAME` |                                 | Username for OpenCode's web UI                                                                                    |
+| `OPENCODE_SERVER_PASSWORD` |                                 | Enable and password-protect OpenCode's web UI on port `4096`                                                      |
 
 ## Development Ports
 
@@ -238,11 +238,11 @@ AUTO_UPDATE=false docker compose restart dev
 
 ## Mounts
 
-| Mount point | Local default          | Production example       | Purpose                                                                                         |
-| ----------- | ---------------------- | ------------------------ | ----------------------------------------------------------------------------------------------- |
-| `/home/dev` | `./data/devbox/home`   | `${DATA}/devbox/home`    | Persists tool installations, credentials, and mise state; missing tools are installed on startup |
-| `/workspace` | `./data/workspace`    | `${HOST_WORKSPACE}`      | Project files                                                                                   |
-| `/home/dev/.ssh` | `${HOME}/.ssh` read-only | `${HOST_HOME}/.ssh` read-only | SSH keys and config                                                                      |
-| `/home/dev/.gnupg` | `${HOME}/.gnupg` | `${HOST_HOME}/.gnupg`    | GnuPG keys and agent data                                                                       |
+| Mount point        | Local default            | Production example            | Purpose                                                                                          |
+| ------------------ | ------------------------ | ----------------------------- | ------------------------------------------------------------------------------------------------ |
+| `/home/dev`        | `./data/devbox/home`     | `${DATA}/devbox/home`         | Persists tool installations, credentials, and mise state; missing tools are installed on startup |
+| `/workspace`       | `./data/workspace`       | `${HOST_WORKSPACE}`           | Project files                                                                                    |
+| `/home/dev/.ssh`   | `${HOME}/.ssh` read-only | `${HOST_HOME}/.ssh` read-only | SSH keys and config                                                                              |
+| `/home/dev/.gnupg` | `${HOME}/.gnupg`         | `${HOST_HOME}/.gnupg`         | GnuPG keys and agent data                                                                        |
 
 > **Warning**: local credentials and projects are stored under `./data`. Production credentials and projects are stored in the host paths configured by the deployment compose file.
